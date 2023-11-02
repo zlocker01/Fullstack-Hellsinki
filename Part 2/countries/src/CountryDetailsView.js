@@ -17,7 +17,7 @@ export const CountryDetailsView = ({ country }) => {
             <h3>Population: </h3>
             <p>{country.population}</p>
             <h3>Weather in {country.capital}</h3>
-            <Weather  />
+            <Weather city={country.capital}/>
         </div>
     )
 }; 

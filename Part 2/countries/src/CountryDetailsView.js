@@ -1,4 +1,5 @@
 import React from "react";
+import { Weather } from "./Weather.";
 
 export const CountryDetailsView = ({ country }) => {
     return (
@@ -16,6 +17,7 @@ export const CountryDetailsView = ({ country }) => {
             <h3>Population: </h3>
             <p>{country.population}</p>
             <h3>Weather in {country.capital}</h3>
+            <Weather  />
         </div>
     )
 }; 

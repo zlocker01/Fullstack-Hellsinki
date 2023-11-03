@@ -45,7 +45,7 @@ export const App = () => {
     const newPerson = { name: newName, number: newNumber };
 
     if (persons.some(person => person.name === newName) || persons.some(person => person.number === newNumber)) {
-      alert(`${newName} ya está en la guía telefónica.`);
+      alert(`${newName} is at the ponebook already`);
     } else {
       phonebookService.create(newPerson)
       .then(data => {
@@ -55,6 +55,13 @@ export const App = () => {
 
     setNewName('');
     setNewNumber('');
+  };
+
+  const handleDelete = person => {
+    phonebookService.remove(person.id)
+    .then(() => {
+      setPersons(persons.filter(p => p.id !== person.id));
+    })
   };
 
   const filteredPersons = persons.filter( person =>
@@ -87,9 +94,9 @@ export const App = () => {
 
       {/* component for contacts info */}
       <Persons 
-      filteredPersons={filteredPersons}
+      filteredPersons={filteredPersons} 
+      onDelete={handleDelete} 
       />
-
     </div>
   );
 };

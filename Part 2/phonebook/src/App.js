@@ -1,54 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
-
-const Filter = ({ searchTerm, handleNewSearch }) => {
-      return (
-        <div>
-        Search Contact: <input 
-        value={searchTerm}
-        onChange={handleNewSearch}
-        />
-        </div>
-      );
-};
-
-const PersonForm = ({ addPerson, handleNewNumber, newNumber, handleChangeName, newName }) => {
-  return (
-    <div>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input 
-          value={newName}
-          onChange={handleChangeName}
-          />
-          <br/>
-          number: <input 
-          value={newNumber}
-          onChange={handleNewNumber}
-          />
-        </div>
-
-        <div>
-          <button>add</button>
-        </div>
-        
-      </form>
-    </div>
-  );
-};
-
-const Persons = ({ filteredPersons }) => {
-  return (
-    <ul>
-      {filteredPersons.map(person => (
-        <li key={person.name}>
-          {person.name} - {person.number}
-        </li>
-      ))}
-    </ul>
-  );
-};
-
+import { useState, useEffect } from 'react';
+import { Filter } from './components/Filter';
+import { PersonForm } from './components/PersonForm';
+import { Persons } from './components/Persons';
+import { phonebookService } from './services/phonebookService'; 
 
 export const App = () => {
   const [ persons, setPersons ] = useState([
@@ -62,6 +17,14 @@ export const App = () => {
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+
+    useEffect(() => {
+      phonebookService.getAll()
+        .then(data => {
+          setPersons(data);
+        });
+    }, []);
+  
 
   //event handles
   function handleChangeName(e) {
@@ -84,8 +47,11 @@ export const App = () => {
     if (persons.some(person => person.name === newName) || persons.some(person => person.number === newNumber)) {
       alert(`${newName} ya está en la guía telefónica.`);
     } else {
-      setPersons([...persons, newPerson]);
-    }
+      phonebookService.create(newPerson)
+      .then(data => {
+        setPersons([...persons, data]);
+      });
+    };
 
     setNewName('');
     setNewNumber('');

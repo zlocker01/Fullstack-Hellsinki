@@ -4,6 +4,7 @@ import { Filter } from './components/Filter';
 import { PersonForm } from './components/PersonForm';
 import { Persons } from './components/Persons';
 import { phonebookService } from './services/phonebookService'; 
+import { Notification } from './components/Notification';
 
 export const App = () => {
   const [ persons, setPersons ] = useState([
@@ -71,7 +72,9 @@ export const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
+      <h1>Phonebook</h1>
+
+      <Notification message={`${newName} has been added`}/>
 
       {/* component for filter */}
       <Filter 
